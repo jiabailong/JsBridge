@@ -15,16 +15,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.github.lzyzsd.library.BuildConfig;
 import com.google.gson.Gson;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class BridgeWebView extends WebView implements WebViewJavascriptBridge, BridgeWebViewClient.OnLoadJSListener {
+public class BridgeWebView extends WebView implements BridgeWebViewClient.OnLoadJSListener {
 
 	private final int URL_MAX_CHARACTER_NUM=2097152;
 	public static final String toLoadJs = "WebViewJavascriptBridge.js";
@@ -66,7 +66,7 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge, B
         getSettings().setJavaScriptEnabled(true);
 //        mContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && BuildConfig.DEBUG) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
         mClient = new BridgeWebViewClient(this);
@@ -106,12 +106,11 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge, B
         }
     }
 
-    @Override
     public void sendToWeb(Object data) {
         sendToWeb(data, (OnBridgeCallback) null);
     }
 
-    @Override
+
     public void sendToWeb(Object data, OnBridgeCallback responseCallback) {
         doSend(null, data, responseCallback);
     }
@@ -129,7 +128,6 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge, B
     }
 
 
-    @Override
     public void sendToWeb(String function, Object... values) {
         // 必须要找主线程才会将数据传递出去 --- 划重点
         if (Thread.currentThread() == Looper.getMainLooper().getThread()) {

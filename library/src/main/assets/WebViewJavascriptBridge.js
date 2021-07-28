@@ -2,9 +2,13 @@
 //since comments will cause error when use in webview.loadurl,
 //comments will be remove by java use regexp
 (function() {
+    console.log("gltest 11111");
+
     if (window.WebViewJavascriptBridge) {
         return;
     }
+
+    console.log("gltest 22222");
 
     var receiveMessageQueue = [];
     var messageHandlers = {};
@@ -56,12 +60,17 @@
             callbackId = '';
         }
         try {
-             var fn = eval('window.android.' + handlerName);
+             var fn = window.android[handlerName];
          } catch(e) {
              console.log(e);
          }
+
+//         window.android.submitFromWeb(JSON.stringify(message), callbackId);
+
          if (typeof fn === 'function'){
-             var responseData = fn.call(this, JSON.stringify(message), callbackId);
+//            console.log(fn.toString());
+              console.log(handlerName);
+             var responseData = window.android[handlerName](JSON.stringify(message), callbackId);
              if(responseData){
               console.log('response message: '+ responseData);
                  responseCallback = responseCallbacks[callbackId];
@@ -132,12 +141,12 @@
 
     var doc = document;
     var readyEvent = doc.createEvent('Events');
-    var jobs = window.WVJBCallbacks || [];
+//    var jobs = window.WVJBCallbacks || [];
     readyEvent.initEvent('WebViewJavascriptBridgeReady');
     readyEvent.bridge = WebViewJavascriptBridge;
-    window.WVJBCallbacks = []
-    jobs.forEach(function (job) {
-        job(WebViewJavascriptBridge)
-    })
+//    window.WVJBCallbacks = []
+//    jobs.forEach(function (job) {
+//        job(WebViewJavascriptBridge)
+//    })
     doc.dispatchEvent(readyEvent);
 })();

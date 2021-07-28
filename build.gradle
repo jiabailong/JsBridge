@@ -2,7 +2,6 @@
 
 buildscript {
     repositories {
-
         jcenter()
         google()
     }
@@ -18,9 +17,6 @@ allprojects {
     repositories {
 
         jcenter()
-        maven {
-            url "https://maven.google.com"
-        }
         google()
     }
     tasks.withType(Javadoc) { // 这一段是为了消除gbk的错�?

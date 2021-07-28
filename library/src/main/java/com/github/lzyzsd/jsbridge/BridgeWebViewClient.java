@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import androidx.annotation.Nullable;
+
+import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
@@ -21,6 +23,8 @@ import android.webkit.WebViewClient;
  * Created by bruce on 10/28/15.
  */
 class BridgeWebViewClient extends WebViewClient {
+
+    private static final String TAG = "BridgeWebViewClient";
 
     private OnLoadJSListener mListener;
 
@@ -72,6 +76,7 @@ class BridgeWebViewClient extends WebViewClient {
             super.onPageFinished(view, url);
         }
         mListener.onLoadStart();
+        Log.d(TAG, "onPageFinished: ");
         BridgeUtil.webViewLoadLocalJs(view, BridgeUtil.JAVA_SCRIPT);
         mListener.onLoadFinished();
     }

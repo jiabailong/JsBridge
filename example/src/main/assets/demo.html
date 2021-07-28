@@ -4,6 +4,8 @@
     <title>
         js调用java
     </title>
+<!--    <script src="./WebViewJavascriptBridge.js"></script>-->
+
 </head>
 
 <body>
@@ -61,13 +63,30 @@
             var str2 = document.getElementById("text2").value;
 
             //call native method
-            window.WebViewJavascriptBridge.callHandler(
+             if (window.WebViewJavascriptBridge) {
+               window.WebViewJavascriptBridge.callHandler(
                 'submitFromWeb'
                 , {'param': '中文测试'}
                 , function(responseData) {
                     document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
                 }
             );
+            } else {
+                document.addEventListener(
+                    'WebViewJavascriptBridgeReady'
+                    , function() {
+                        window.WebViewJavascriptBridge.callHandler(
+                            'submitFromWeb'
+                            , {'param': '中文测试'}
+                            , function(responseData) {
+                                document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+                            }
+                        );
+                    },
+                    false
+                );
+            }
+
         }
 
         function bridgeLog(logContent) {
@@ -88,6 +107,7 @@
             }
         }
 
+        setTimeout(function(){
         connectWebViewJavascriptBridge(function(bridge) {
             bridge.init(function(message, responseCallback) {
                 console.log('JS got a message', message);
@@ -102,13 +122,16 @@
             });
 
             bridge.registerHandler("functionInJs", function(data, responseCallback) {
+                console.log("glttest onBroadcastUpdate got a message : " + data);
                 document.getElementById("show").innerHTML = ("data from Java: = " + data);
                 if (responseCallback) {
                     var responseData = "Javascript Says Right back aka!";
                     responseCallback(responseData);
                 }
             });
-        })
+        });
+        }, 2000)
+
 
 </script>
 

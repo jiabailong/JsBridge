@@ -78,6 +78,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		});
 
 		webView.addJavascriptInterface(new MainJavascrotInterface(webView.getCallbacks(), webView), "android");
+//		webView.addJavascriptInterface(new JSKit(),"android");
 		webView.setGson(new Gson());
 		webView.loadUrl("file:///android_asset/demo.html");
 
@@ -130,7 +131,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (button.equals(v)) {
-            webView.callHandler("functionInJs", "data from Java", new OnBridgeCallback() {
+            webView.callHandler("functionInJs", "data from Java buttonclieck glttest", new OnBridgeCallback() {
 
 				@Override
 				public void onCallBack(String data) {
