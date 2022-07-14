@@ -24,13 +24,16 @@ public class MainJavascrotInterface extends BridgeWebView.BaseJavascriptInterfac
 
     @Override
     public String send(String data) {
-        return "it is default response";
+        Log.d("@ATI-send","get data from  web"+data);
+        return "get data from  web"+data;
     }
 
 
     @JavascriptInterface
     public void submitFromWeb(String data, String callbackId) {
         Log.d("chromium data", data + ", callbackId: " + callbackId + " " + Thread.currentThread().getName());
+        Log.d("@ATI-submitFromWeb","submitFromWeb-"+callbackId+"-"+data);
+
         mWebView.sendResponse("submitFromWeb response", callbackId);
     }
 }

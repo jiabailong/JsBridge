@@ -27,20 +27,11 @@ import java.util.Map;
 public class BridgeWebView extends WebView implements BridgeWebViewClient.OnLoadJSListener {
 
 	private final int URL_MAX_CHARACTER_NUM=2097152;
-	public static final String toLoadJs = "WebViewJavascriptBridge.js";
-	Map<String, CallBackFunction> responseCallbacks = new HashMap<String, CallBackFunction>();
-	Map<String, BridgeHandler> messageHandlers = new HashMap<String, BridgeHandler>();
-	BridgeHandler defaultHandler = new DefaultHandler();
     private Map<String, OnBridgeCallback> mCallbacks = new ArrayMap<>();
-
     private List<Object> mMessages = new ArrayList<>();
-
     private BridgeWebViewClient mClient;
-
     private long mUniqueId = 0;
-
     private boolean mJSLoaded = false;
-
     private Gson mGson;
 
     public BridgeWebView(Context context, AttributeSet attrs) {
@@ -175,6 +166,8 @@ public class BridgeWebView extends WebView implements BridgeWebViewClient.OnLoad
             dispatchMessage(message);
         }
     }
+
+
 
     /**
      * 分发message 必须在主线程才分发成功
