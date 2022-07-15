@@ -2,17 +2,17 @@
 //since comments will cause error when use in webview.loadurl,
 //comments will be remove by java use regexp
 (function() {
-    console.log("gltest 11111");
+    console.log("load jdbr start");
 
     if (window.WebViewJavascriptBridge) {
+        console.log("jsbr has loaded");
         return;
     }
 
-    console.log("gltest 22222");
+    console.log("start init js bridge");
 
     var receiveMessageQueue = [];
     var messageHandlers = {};
-
     var responseCallbacks = {};
     var uniqueId = 1;
 
@@ -65,10 +65,7 @@
              console.log(e);
          }
 
-//         window.android.submitFromWeb(JSON.stringify(message), callbackId);
-
          if (typeof fn === 'function'){
-//            console.log(fn.toString());
               console.log(handlerName);
              var responseData = window.android[handlerName](JSON.stringify(message), callbackId);
              if(responseData){
@@ -138,15 +135,10 @@
         callHandler: callHandler,
         _handleMessageFromNative: _handleMessageFromNative
     };
-
+//js bridge加载完成事件回调
     var doc = document;
     var readyEvent = doc.createEvent('Events');
-//    var jobs = window.WVJBCallbacks || [];
     readyEvent.initEvent('WebViewJavascriptBridgeReady');
     readyEvent.bridge = WebViewJavascriptBridge;
-//    window.WVJBCallbacks = []
-//    jobs.forEach(function (job) {
-//        job(WebViewJavascriptBridge)
-//    })
     doc.dispatchEvent(readyEvent);
 })();

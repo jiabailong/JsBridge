@@ -18,10 +18,10 @@
     </xmp>
 </p>
 <p>
-    <input type="text" id="text1" value="用户名(username)"/>
+    <input type="text" id="text1" value="ATI"/>
 </p>
 <p>
-    <input type="text" id="text2" value="password"/>
+    <input type="text" id="text2" value="123456"/>
 </p>
 <p>
     <input type="button" id="enter" value="发消息给Native" onclick="testClick();"
@@ -52,7 +52,7 @@
             window.WebViewJavascriptBridge.send(
                 data
                 , function(responseData) {
-                    document.getElementById("show").innerHTML = "repsonseData from java, data = " + responseData
+                    document.getElementById("show").innerHTML = "调用JAVA.send函数后，JAVA函数回调给JS的数据 ，" + responseData
                 }
             );
 
@@ -68,7 +68,7 @@
                 'submitFromWeb'
                 , {'param': '中文测试'}
                 , function(responseData) {
-                    document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+                    document.getElementById("show").innerHTML = "调用JAVA（xxx）方法，方法的数据回传 data = " + responseData
                 }
             );
             } else {
@@ -92,6 +92,9 @@
         function bridgeLog(logContent) {
             document.getElementById("show").innerHTML = logContent;
         }
+        function bridgeLog2(message, responseCallback) {
+            document.getElementById("show").innerHTML = "bridgeLog2"+message;
+        }
 
         function connectWebViewJavascriptBridge(callback) {
             if (window.WebViewJavascriptBridge) {
@@ -109,26 +112,12 @@
 
         setTimeout(function(){
         connectWebViewJavascriptBridge(function(bridge) {
-            bridge.init(function(message, responseCallback) {
-                console.log('JS got a message', message);
-                var data = {
-                    'Javascript Responds': '测试中文!'
-                };
-
-                if (responseCallback) {
-                    console.log('JS responding with', data);
-                    responseCallback(data);
-                }
+            bridge.init(function() {
+                console.log('JS got a message');
+            
             });
 
-            bridge.registerHandler("functionInJs", function(data, responseCallback) {
-                console.log("glttest onBroadcastUpdate got a message : " + data);
-                document.getElementById("show").innerHTML = ("data from Java: = " + data);
-                if (responseCallback) {
-                    var responseData = "Javascript Says Right back aka!";
-                    responseCallback(responseData);
-                }
-            });
+            bridge.registerHandler("functionInJs",bridgeLog2);
         });
         }, 2000)
 
