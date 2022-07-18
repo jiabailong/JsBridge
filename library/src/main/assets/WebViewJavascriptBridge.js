@@ -86,6 +86,7 @@
             var message = JSON.parse(messageJSON);
             var responseCallback;
             //java call finished, now need to call js callback function
+            console.log("@ATI-responseId="+message.responseId);
             if (message.responseId) {
                 responseCallback = responseCallbacks[message.responseId];
                 if (!responseCallback) {
@@ -94,13 +95,16 @@
                 responseCallback(message.responseData);
                 delete responseCallbacks[message.responseId];
             } else {
-                //直接发送
+                console.log("@ATI-callbackId="+message.callbackId);
+
+                //生成js的responseCallback的回调函数
                 if (message.callbackId) {
                     var callbackResponseId = message.callbackId;
                     responseCallback = function(responseData) {
                         _doSend('response', responseData, callbackResponseId);
                     };
                 }
+                console.log("@ATI-handlerName="+message.handlerName);
 
                 var handler = WebViewJavascriptBridge._messageHandler;
                 if (message.handlerName) {
@@ -141,4 +145,5 @@
     readyEvent.initEvent('WebViewJavascriptBridgeReady');
     readyEvent.bridge = WebViewJavascriptBridge;
     doc.dispatchEvent(readyEvent);
+    console.log("js bridge start");
 })();

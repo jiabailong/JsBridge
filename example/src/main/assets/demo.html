@@ -39,6 +39,7 @@
 </p>
 </body>
 <script>
+    console.log("demohtml.script start")
         function testDiv() {
             document.getElementById("show").innerHTML = document.getElementsByTagName("html")[0].innerHTML;
         }
@@ -93,7 +94,8 @@
             document.getElementById("show").innerHTML = logContent;
         }
         function bridgeLog2(message, responseCallback) {
-            document.getElementById("show").innerHTML = "bridgeLog2"+message;
+            document.getElementById("show").innerHTML = "bridgeLog2-"+message;
+            responseCallback("HELLO I AM ATI");
         }
 
         function connectWebViewJavascriptBridge(callback) {
@@ -120,7 +122,46 @@
             bridge.registerHandler("functionInJs",bridgeLog2);
         });
         }, 2000)
+setTimeout(function(){
+            
+var body = document.body,
+    html = document.documentElement;
 
+var height = Math.max( body.scrollHeight, body.offsetHeight,
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
+ var width=Math.max( body.scrollWidth, body.offsetWidth,
+                       html.clientWidth, html.scrollWidth, html.offsetWidth );
+                  
+                var size = {
+                "height": height,
+                "widht": width
+                };
+                var jsonobj=JSON.stringify(size);
+                console.log("@ATI--"+JSON.stringify(size));
+
+          //call native method
+          if (window.WebViewJavascriptBridge) {
+               window.WebViewJavascriptBridge.callHandler(
+                'htmlSize'
+                , jsonobj
+               
+            );
+            } else {
+                document.addEventListener(
+                    'WebViewJavascriptBridgeReady'
+                    , function() {
+                        window.WebViewJavascriptBridge.callHandler(
+                            'htmlSize'
+                            , jsonobj
+                           
+                        );
+                    },
+                    false
+                );
+            }
+               
+
+});
 
 </script>
 

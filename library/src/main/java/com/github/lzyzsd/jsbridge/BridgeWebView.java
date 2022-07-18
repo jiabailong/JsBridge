@@ -57,9 +57,9 @@ public class BridgeWebView extends WebView implements BridgeWebViewClient.OnLoad
         getSettings().setJavaScriptEnabled(true);
 //        mContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            WebView.setWebContentsDebuggingEnabled(true);
+//        }
         mClient = new BridgeWebViewClient(this);
         super.setWebViewClient(mClient);
     }
@@ -249,7 +249,11 @@ public class BridgeWebView extends WebView implements BridgeWebViewClient.OnLoad
                 }
             }
         }
+        @JavascriptInterface
+        public void htmlSize(String data,String callbackId) {
+            Log.d("chromium",  "html data"+data+"--"+callbackId);
 
+        }
         public abstract String send(String data);
     }
 

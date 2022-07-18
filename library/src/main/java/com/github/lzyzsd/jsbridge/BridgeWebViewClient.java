@@ -59,6 +59,7 @@ class BridgeWebViewClient extends WebViewClient {
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        Log.d("@ATI","onPageStarted--"+url);
         if (mClient != null) {
             mClient.onPageStarted(view, url, favicon);
         } else {
